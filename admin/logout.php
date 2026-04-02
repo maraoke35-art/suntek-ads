@@ -1,0 +1,1 @@
+<?php require '../db_connect.php'; unset($_SESSION['admin']); header('Location: admin_login.php'); exit; ?>

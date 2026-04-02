@@ -1,0 +1,8 @@
+<?php require 'db_connect.php'; if(!isset($_SESSION['user'])){ header('Location: login.php'); exit; } $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : []; if(count($cart)==0){ header('Location: cart.php'); exit; } $total = 0; foreach($cart as $item) $total += $item['price']*$item['qty']; ?>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Checkout</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"></head><body>
+<nav class="navbar navbar-dark bg-dark"><div class="container"><a class="navbar-brand" href="index.php">Suntek Store</a></div></nav>
+<div class="container mt-3"><h2>Checkout</h2><h4>Order Summary</h4><ul><?php foreach($cart as $item): ?><li><?=htmlspecialchars($item['name'])?> x <?=$item['qty']?> — $<?=number_format($item['price']*$item['qty'],2)?></li><?php endforeach; ?></ul><p class="fw-bold">Total: $<?=number_format($total,2)?></p>
+<form method="post" action="process_order.php"><div class="mb-3"><label class="form-label">Full Name</label><input name="fullname" class="form-control" required value="<?=htmlspecialchars($_SESSION['user']['name'])?>"></div>
+<div class="mb-3"><label class="form-label">Address</label><textarea name="address" class="form-control" required></textarea></div>
+<div class="mb-3"><label class="form-label">Payment Method</label><select name="method" class="form-select"><option>Test Card</option><option>Bank Transfer</option><option>Cash on Delivery</option></select></div>
+<button class="btn btn-success">Place Order (Simulate Payment)</button></form></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script></body></html>
